@@ -1,0 +1,1 @@
+# gogidang_mypart

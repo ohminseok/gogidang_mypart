@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+	 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	 
+ <mapper namespace="com.spring.mapper.MemberMapper">
+ 	
+ 	<select id="getMembers" resultType="MemberVO">
+		SELECT * FROM member order by u_id
+	</select>
+ 	
+ 	<insert id="insertMember" parameterType="MemberVO">
+		INSERT INTO member VALUES (#{u_id}, #{u_pw}, #{u_name},#{u_nick}, #{u_birth}, #{u_addr},#{u_email},#{u_phone},#{u_agree},#{seller_key})
+	</insert>
+	
+	<select id="userCheck" parameterType="MemberVO" resultType="int">
+		SELECT count(*) FROM member WHERE u_id=#{u_id} and u_pw=#{u_pw}
+	</select>
+	
+	<select id="selectMember" parameterType="MemberVO" resultType="MemberVO">
+		SELECT * FROM member where u_id=#{u_id}
+	</select>
+	
+	<select id="getEvents" resultType="EventVO">
+		SELECT * FROM event 
+	</select>
+	
+	<select id="selectEvent" resultType="EventVO">
+		SELECT * FROM event WHERE event_num=#{event_num}
+	</select>
+	
+	<select id="getReviews" resultType="ReviewVO">
+		SELECT * FROM review 
+	</select>
+	
+	<select id="getShop_regs" resultType="Shop_regVO">
+		SELECT * FROM shop_reg          
+	</select>
+	
+	<select id="getQnas" parameterType="HashMap" resultType="QnaVO">
+	<![CDATA[
+	SELECT q.qna_num,m.u_id,q.title,q.content,q.re_date,q.re_ref,q.re_lev,q.re_seq 
+	FROM (SELECT rownum runm,q.qna_num,m.u_id,q.title,q.content,q.re_date,q.re_ref,q.re_lev,q.re_seq
+			FROM (SELECT q.qna_num,m.u_id,q.title,q.content,q.re_date,q.re_ref,q.re_lev,q.re_seq FROM qna q,member m WHERE q.u_id=m.u_id ORDER BY re_ref desc,re_seq asc ))  
+	WHERE rnum>=#{startrow} AND rnum<=#{endrow}
+	 ]]>
+	</select>
+	
+	<!-- <select id="getQnaList" resultType="QnaVO" parameterType="HashMap">
+		SELECT * 
+		FROM (SELECT rownum rnum,qna_num,u_id,title,content,re_date,photo
+			FROM (SELECT * FROM qna ORDER BY re_ref desc, re_seq asc))
+		WHERE rnum>=#{startrow} AND rnum<=#{endrow}	
+	</select> -->
+	
+	
+ 
+ </mapper>
