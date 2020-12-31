@@ -28,6 +28,7 @@
 
 <center>
 	<h3>이벤트 메인사진</h3>
+	<a>hello</a>
 			<table border=1 width=300>
 				
 					<%
