@@ -7,7 +7,9 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+
 import com.spring.mapper.QnaMapper;
+
 
 @Service("qnaService")
 public class QnaServiceImpl implements QnaService {
@@ -28,5 +30,32 @@ public class QnaServiceImpl implements QnaService {
 		List<QnaVO> qnalist = qnaMapper.getQnaList(hashmap);
 		return qnalist;
 	}
-
+	
+	@Override
+	public int qnaInsert(QnaVO qna) {
+		QnaMapper qnaMapper = sqlSession.getMapper(QnaMapper.class);
+		int res= qnaMapper.qnaInsert(qna);
+		return res;
+	}
+	
+	@Override
+	public QnaVO getDetail(int qna_num) {
+		QnaMapper qnaMapper = sqlSession.getMapper(QnaMapper.class);
+		QnaVO qna = qnaMapper.getDetail(qna_num);
+		return qna;
+	}
+	
+	@Override
+	public QnaVO qnaModifyForm(int qna_num) {
+		QnaMapper qnaMapper = sqlSession.getMapper(QnaMapper.class);
+		QnaVO qna = qnaMapper.getDetail(qna_num);
+		return qna;
+	}
+	
+	@Override
+	public int qnaModify(QnaVO qna) {
+		QnaMapper qnaMapper = sqlSession.getMapper(QnaMapper.class);
+		int res = qnaMapper.qnaModify(qna);
+		return res;
+	}
 }

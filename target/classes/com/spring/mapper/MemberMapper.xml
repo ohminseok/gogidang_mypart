@@ -37,14 +37,7 @@
 		SELECT * FROM shop_reg          
 	</select>
 	
-	<select id="getQnas" parameterType="HashMap" resultType="QnaVO">
-	<![CDATA[
-	SELECT q.qna_num,m.u_id,q.title,q.content,q.re_date,q.re_ref,q.re_lev,q.re_seq 
-	FROM (SELECT rownum runm,q.qna_num,m.u_id,q.title,q.content,q.re_date,q.re_ref,q.re_lev,q.re_seq
-			FROM (SELECT q.qna_num,m.u_id,q.title,q.content,q.re_date,q.re_ref,q.re_lev,q.re_seq FROM qna q,member m WHERE q.u_id=m.u_id ORDER BY re_ref desc,re_seq asc ))  
-	WHERE rnum>=#{startrow} AND rnum<=#{endrow}
-	 ]]>
-	</select>
+
 	
 	<!-- <select id="getQnaList" resultType="QnaVO" parameterType="HashMap">
 		SELECT * 

@@ -5,9 +5,10 @@
 
 
 <%
-
+	String u_id=null;
+	u_id=(String)session.getAttribute("u_id");
 	
-	List<QnaVO> qnalist=(List<QnaVO>)request.getAttribute("qnalist");
+ 	List<QnaVO> qnalist=(List<QnaVO>)request.getAttribute("qnalist");
 	int listcount=((Integer)request.getAttribute("listcount")).intValue();
 	int nowpage=((Integer)request.getAttribute("page")).intValue();
 	int maxpage=((Integer)request.getAttribute("maxpage")).intValue();
@@ -68,7 +69,7 @@
 			<%}else{ %>
 				▶
 			<%} %>
-			<a href="./boarddetail.bo?num=<%=ql.getQna_num()%>">
+			<a href="./qnadetail.bo?qna_num=<%=ql.getQna_num()%>">
 				<%=ql.getTitle()%>
 			</a>
 			</div>
@@ -90,14 +91,14 @@
 			<%if(nowpage<=1){ %>
 			[이전]&nbsp;
 			<%}else{ %>
-			<a href="./boardlist.bo?page=<%=nowpage-1 %>">[이전]</a>&nbsp;
+			<a href="./qnalist.bo?page=<%=nowpage-1 %>">[이전]</a>&nbsp;
 			<%} %>
 			
 			<%for(int a=startpage;a<=endpage;a++){
 				if(a==nowpage){%>
 				[<%=a %>]
 				<%}else{ %>
-				<a href="./boardlist.bo?page=<%=a %>">[<%=a %>]</a>
+				<a href="./qnalist.bo?page=<%=a %>">[<%=a %>]</a>
 				&nbsp;
 				<%} %>
 			<%} %>
@@ -105,7 +106,7 @@
 			<%if(nowpage>=maxpage){ %>
 			[다음]
 			<%}else{ %>
-			<a href="./boardlist.bo?page=<%=nowpage+1 %>">[다음]</a>
+			<a href="./qnalist.bo?page=<%=nowpage+1 %>">[다음]</a>
 			<%} %>
 		</td>
 	</tr>
@@ -114,7 +115,7 @@
 			<%-- <%if(u_id!=null && u_id.equals("admin")){%>
 				<a href="./memberlist.me">[회원관리]</a>
 			<%}%> --%>
-	   		<a href="./boardwriteform.bo">[글쓰기]</a>
+	   		<a href="./qnawriteform.bo">[글쓰기]</a>
 		</td>
 	</tr>
 </table>

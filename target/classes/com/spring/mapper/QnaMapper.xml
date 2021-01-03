@@ -9,14 +9,30 @@
  	SELECT count(*) FROM qna
  </select>
  
- <select id="getQnaList" parameterType="HashMap" resultType="QnaVO">
+ 	<select id="getQnaList" parameterType="HashMap" resultType="QnaVO">	
 	<![CDATA[
-	SELECT qna_num,u_id,title,content,re_date,re_ref,re_lev,re_seq 
+	SELECT * 
 	FROM (SELECT rownum rnum,qna_num,u_id,title,content,re_date,re_ref,re_lev,re_seq 
-	FROM (SELECT q.qna_num,m.u_id as u_id,q.title,q.content,q.re_date,q.re_ref,q.re_lev,q.re_seq 
-	FROM qna q,member m WHERE q.u_id=m.u_id ORDER BY q.re_ref desc, q.re_seq asc)) 
+	FROM (SELECT * FROM qna ORDER BY re_ref desc, re_seq asc)) 
 	WHERE rnum>=#{startrow} AND rnum<=#{endrow}
 	 ]]>
 	</select>
+	
+	<insert id="qnaInsert" parameterType="QnaVO">
+		<selectKey keyProperty="qna_num" order="BEFORE" resultType="int">
+			SELECT nvl(max(qna_num), 0)+1 FROM qna
+		</selectKey>
+		INSERT INTO qna(qna_num,u_id,title,content,re_date,re_ref,re_lev,re_seq) 
+		VALUES (#{qna_num}, #{u_id}, #{title}, #{content}, sysdate, #{re_ref}, #{re_lev}, #{re_seq})
+	</insert>
+	
+	<select id="getDetail" parameterType="int" resultType="QnaVO">
+ 		SELECT * FROM qna WHERE qna_num=#{qna_num}
+ 	</select>
+ 	
+ 	<update id="qnaModify" parameterType="QnaVO">
+		UPDATE qna SET title=#{title}, content=#{content} WHERE qna_num=#{qna_num}
+	</update>
+	
  
  </mapper>

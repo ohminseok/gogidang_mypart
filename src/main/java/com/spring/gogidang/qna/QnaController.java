@@ -1,13 +1,21 @@
 package com.spring.gogidang.qna;
 
+import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.List;
+
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+
+
+
 
 
 
@@ -48,6 +56,56 @@ public class QnaController {
 		model.addAttribute("endpage", endpage);
 		
 		return "qna/qna_board_list";
+	}
+	
+	@RequestMapping("qnawriteform.bo")
+	public String qnaInsertForm()  {
+		return "qna/qna_board_write";
+	}
+	
+	@RequestMapping("/qnawrite.bo")
+	public String qnaInsert(QnaVO qna,HttpSession session,HttpServletResponse response) throws Exception {
+		int res = qnaService.qnaInsert(qna);
+		
+		response.setCharacterEncoding("utf-8");
+		response.setContentType("text/html; charset=utf-8");
+		PrintWriter writer = response.getWriter();
+		
+		if(res == 1)
+		{
+			writer.write("<script>alert('작성 완료!!');location.href='./qnalist.bo';</script>");
+		}
+		else
+		{
+			writer.write("<script>alert('작성 실패!!');location.href='./qnawriteform.bo';</script>");
+		}
+		
+		return null;
+	}
+	
+	@RequestMapping("/qnadetail.bo") 
+	public String getDetail(@RequestParam(value="qna_num", required=true) int qna_num, Model model) {
+		QnaVO qna = qnaService.getDetail(qna_num); 
+		
+		model.addAttribute("qna", qna);
+		
+		return "qna/qna_board_view";
+	}
+	
+	@RequestMapping("/qnamodifyform.bo") 
+	public String getModifyForm(@RequestParam(value="qna_num", required=true) int qna_num, Model model) {
+		QnaVO qna = qnaService.getDetail(qna_num);
+		
+		model.addAttribute("qna", qna);
+		
+		return "qna/qna_board_modify";
+	}
+
+	@RequestMapping("/qnamodify.bo") 
+	public String qnaModify(QnaVO qna) throws Exception {
+		int res = qnaService.qnaModify(qna);
+		
+		return "redirect:/qnadetail.bo?qna_num=" + qna.getQna_num();
 	}
 	
 	
